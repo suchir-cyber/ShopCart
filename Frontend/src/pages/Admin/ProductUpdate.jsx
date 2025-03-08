@@ -1,85 +1,126 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
-  useCreateProductMutation,
-  useUploadProductImageMutation,
-} from "../../redux/api/productApiSlice";
-import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
-import { toast } from "react-toastify";
-import AdminMenu from "./AdminMenu";
+    useUpdateProductMutation,
+    useDeleteProductMutation,
+    useGetProductByIdQuery,
+    useUploadProductImageMutation,
+  } from "../../redux/api/productApiSlice";
+  import { toast } from "react-toastify";
+  import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
+  import AdminMenu from "./AdminMenu";
 
 
-export const ProductList = () => {
-
-    const [image, setImage] = useState("");
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [price, setPrice] = useState("");
-    const [category, setCategory] = useState("");
-    const [quantity, setQuantity] = useState("");
-    const [brand, setBrand] = useState("");
-    const [stock, setStock] = useState(0);
-    const [imageUrl, setImageUrl] = useState(null);
-    const navigate = useNavigate();
+export const ProductUpdate = () => {
   
-    const [uploadProductImage] = useUploadProductImageMutation();
-    const [createProduct] = useCreateProductMutation();
-    const { data: categories } = useFetchCategoriesQuery();
+  const params = useParams()
+  const {data: productData} = useGetProductByIdQuery(params._id)
+  console.log(productData);
 
+  const [image, setImage] = useState(productData?.image || "");
+  const [name, setName] = useState(productData?.name || "");
+  const [description, setDescription] = useState(
+    productData?.description || ""
+  );
+  const [price, setPrice] = useState(productData?.price || "");
+  const [category, setCategory] = useState(productData?.category || "");
+  const [quantity, setQuantity] = useState(productData?.quantity || "");
+  const [brand, setBrand] = useState(productData?.brand || "");
+  const [stock, setStock] = useState(productData?.countInStock);
 
-    const uploadFileHandler = async (e) => {
-        const formData = new FormData();
-        formData.append("image", e.target.files[0]);
-    
-        try {
-          const res = await uploadProductImage(formData).unwrap();
-          toast.success(res.message);
-          setImage(res.image);
-          setImageUrl(res.image);
-        } catch (error) {
-          toast.error(error?.data?.message || error.error);
-        }
-    };
+  // hook
+  const navigate = useNavigate();
+  
+   // Fetch categories using RTK Query
+   const { data: categories = [] } = useFetchCategoriesQuery();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-    
-        try {
-          const productData = new FormData();
-          productData.append("image", image);
-          productData.append("name", name);
-          productData.append("description", description);
-          productData.append("price", price);
-          productData.append("category", category);
-          productData.append("quantity", quantity);
-          productData.append("brand", brand);
-          productData.append("countInStock", stock);
-    
-          const { data } = await createProduct(productData);
-    
-          if (data.error) {
-            toast.error("Product create failed. Try Again.");
-          } else {
-            toast.success(`${data.name} is created`);
-            navigate("/");
-          }
-        } catch (error) {
-          console.error(error);
-          toast.error("Product create failed. Try Again.");
-        }
-    };
+   const [uploadProductImage] = useUploadProductImageMutation();
+ 
+   // Define the update product mutation
+   const [updateProduct] = useUpdateProductMutation();
+ 
+   // Define the delete product mutation
+   const [deleteProduct] = useDeleteProductMutation();
 
-    return (
-        <div className="container xl:mx-[9rem] sm:mx-[0]">
+   useEffect(() => {
+    if (productData && productData._id) {
+      setName(productData.name);
+      setDescription(productData.description);
+      setPrice(productData.price);
+      setCategory(productData.category?._id || "");
+      setQuantity(productData.quantity);
+      setBrand(productData.brand);
+      setImage(productData.image);
+    }
+  }, [productData]);
+
+  const uploadFileHandler = async (e) => {
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
+    try {
+      const res = await uploadProductImage(formData).unwrap();
+      toast.success("Item added successfully");
+      setImage(res.image);
+    } catch (err) {
+      toast.success("Item added successfully");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("category", category);
+      formData.append("quantity", quantity);
+      formData.append("brand", brand);
+      formData.append("countInStock", stock);
+
+      // Update product using the RTK Query mutation
+      const data = await updateProduct({ productId: params._id, formData });
+
+      if (data?.error) {
+        toast.error(data.error);
+      } else {
+        toast.success(`Product successfully updated`);
+        navigate("/admin/allproductslist");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Product update failed. Try again.");
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      let answer = window.confirm(
+        "Are you sure you want to delete this product?"
+      );
+      if (!answer) return;
+
+      const { data } = await deleteProduct(params._id);
+      toast.success(`"${data.name}" is deleted`);
+      navigate("/admin/allproductslist");
+    } catch (err) {
+      console.log(err);
+      toast.error("Delete failed. Try again.");
+    }
+  };
+
+  return (
+    <div className="container xl:mx-[9rem] sm:mx-[0]">
             <div className="flex flex-col md:flex-row">
                 <AdminMenu />
                 <div className="md:w-3/4 p-3">
                     <div className="h-12">Create Product</div>
 
-                    {imageUrl && (
+                    {image && (
                     <div className="text-center">
                     <img
-                        src={imageUrl}
+                        src={image}
                         alt="product"
                         className="block mx-auto max-h-[200px]"
                     />
@@ -187,17 +228,25 @@ export const ProductList = () => {
                         </div>
                     </div>
                     
-                    <button
-              onClick={handleSubmit}
-              className="py-4 px-10 mt-5 rounded-lg text-lg font-bold bg-pink-600"
-            >
-              Submit
-            </button>
+                    <div className="">
+                <button
+                  onClick={handleSubmit}
+                  className="py-4 px-10 mt-5 rounded-lg text-lg font-bold  bg-green-600 mr-6"
+                >
+                  Update
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="py-4 px-10 mt-5 rounded-lg text-lg font-bold  bg-pink-600"
+                >
+                  Delete
+                </button>
+              </div>
 
 
                 </div>
             </div>
         </div>  
         </div>  
-    );
-};
+  )
+}
