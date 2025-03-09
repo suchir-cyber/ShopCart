@@ -21,8 +21,8 @@ import { AdminRoute } from './pages/Admin/AdminRoute.jsx';
 import { UserList } from './pages/Admin/UserList.jsx';
 import { CategoryList } from './pages/Admin/CategoryList.jsx';
 import { ProductList } from './pages/Admin/ProductList.jsx';
-import { ProductUpdate } from './pages/Admin/ProductUpdate.jsx';
-import { AllProducts } from './pages/Admin/AllProducts.jsx';
+import  ProductUpdate  from '../src/pages/Admin/ProductUpdate.jsx'
+import { AllProducts } from '../src/pages/Admin/AllProducts.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
