@@ -10,6 +10,9 @@ import { Register } from './pages/Auth/Register.jsx';
 
 import PrivateRoute from './components/PrivateRoute.jsx';
 
+//Home
+import  Home  from './Home.jsx';
+
 //users
 import { Profile } from './pages/User/Profile.jsx';
 
@@ -29,6 +32,7 @@ const router = createBrowserRouter(
     <Route path='/' element = {<App />} >
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route index={true} path='/' element={<Home />} />
 
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<Profile />} />
