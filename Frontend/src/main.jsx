@@ -11,12 +11,14 @@ import { Register } from './pages/Auth/Register.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 
 //Home
-import  Home  from './Home.jsx';
+import Home from './pages/Home.jsx';
 
 //users
 import { Profile } from './pages/User/Profile.jsx';
 import  Favorites  from './pages/Products/Favorites.jsx';
 import  ProductDetails  from './pages/Products/ProductDetails.jsx';
+import Cart from './pages/Cart.jsx';
+import  Shop  from './pages/Shop.jsx';
 
 // Auth
 import Login from './pages/Auth/Login.jsx'
@@ -37,6 +39,8 @@ const router = createBrowserRouter(
       <Route index={true} path='/' element={<Home />} />
       <Route path='/favorite' element={<Favorites />} />
       <Route path='product/:id' element={<ProductDetails/>} />
+      <Route path='/cart' element={<Cart />} />
+      <Route path='/shop' element={<Shop />} />
 
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<Profile />} />

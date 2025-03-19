@@ -3,6 +3,8 @@ import { configureStore  } from "@reduxjs/toolkit";
 import { apiSlice } from "../api/apiSlice";
 import authReducer from './Auth/authSlice';
 import favoritesReducer from './favorites/favoriteSlice';
+import cartSliceReducer from '../features/cart/cartSlice'
+import shopReducer from './shop/shopSlice.js'
 import { getFavoritesFromLocalStorage } from "../../Utils/localStorage";
 
 const initialFavorites = getFavoritesFromLocalStorage() || [];
@@ -12,6 +14,8 @@ export const store = configureStore({
       [apiSlice.reducerPath]: apiSlice.reducer,
       auth : authReducer,
       favorites: favoritesReducer,
+      cart : cartSliceReducer, 
+      shop : shopReducer, 
     },
 
     preloadedState: {
