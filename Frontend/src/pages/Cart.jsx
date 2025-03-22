@@ -85,7 +85,7 @@ const Cart = () => {
               <div className="mt-8 w-[40rem]">
                 <div className="p-4 rounded-lg">
                   <h2 className="text-xl font-semibold mb-2">
-                    Items ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                    Items ({cartItems.reduce((acc, item) => acc + Number(item.qty), 0)})
                   </h2>
 
                   <div className="text-2xl font-bold">
