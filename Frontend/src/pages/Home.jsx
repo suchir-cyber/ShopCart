@@ -1,19 +1,18 @@
-import React from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { useGetProductsQuery } from '../redux/api/productApiSlice'
-import Loader from '../components/Loader'
-import Message from '../components/Message'
-import Header from '../components/Header'
-import  Product  from './Products/Product'
-
+import { Link ,useParams } from "react-router-dom"
+import { useGetProductsQuery } from "../redux/api/productApiSlice"
+import Loader from "../components/Loader"
+import Header from "../components/Header"
+import Message from "../components/Message"
+import Product from "./Products/Product"
 const Home = () => {
-  const { keyword } = useParams();
-  const { data , isLoading , isError } = useGetProductsQuery({keyword});
-  console.log(data)
-  console.log(isError)
+    const {keyword} = useParams();
+    const {data, isLoading, isError} = useGetProductsQuery({keyword});
+    // returns 6 products due to page size=6
+
+
   return (
     <>
-        {!keyword ? <Header /> : null}
+      {!keyword ? <Header /> : null}
       {isLoading ? (<Loader />): isError ? (<Message variant="danger">
         {isError?.data.message || isError.error}
       </Message>) :(
@@ -43,7 +42,7 @@ const Home = () => {
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Home;
+export default Home

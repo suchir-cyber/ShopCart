@@ -7,7 +7,7 @@ const UserOrder = () => {
   const { data: orders, isLoading, error } = useGetMyOrdersQuery();
 
   return (
-    <div className="container mx-auto">
+    <div className="container max-w-[1300px] mx-auto">
       <h2 className="text-2xl font-semibold mb-4">My Orders </h2>
 
       {isLoading ? (
@@ -39,15 +39,15 @@ const UserOrder = () => {
 
                 <td className="py-2">{order._id}</td>
                 <td className="py-2">{order.createdAt.substring(0, 10)}</td>
-                <td className="py-2">$ {order.totalPrice}</td>
+                <td className="py-2">₹ {order.totalPrice}</td>
 
                 <td className="py-2">
                   {order.isPaid ? (
-                    <p className="p-1 text-center bg-green-400 w-[6rem] rounded-full">
+                    <p className="p-1 text-center bg-green-300 w-[6rem] rounded-full">
                       Completed
                     </p>
                   ) : (
-                    <p className="p-1 text-center bg-red-400 w-[6rem] rounded-full">
+                    <p className="p-1 text-center bg-red-300 w-[6rem] rounded-full">
                       Pending
                     </p>
                   )}
@@ -55,11 +55,11 @@ const UserOrder = () => {
 
                 <td className="px-2 py-2">
                   {order.isDelivered ? (
-                    <p className="p-1 text-center bg-green-400 w-[6rem] rounded-full">
+                    <p className="p-1 text-center bg-green-300 w-[6rem] rounded-full">
                       Completed
                     </p>
                   ) : (
-                    <p className="p-1 text-center bg-red-400 w-[6rem] rounded-full">
+                    <p className="p-1 text-center bg-red-300 w-[6rem] rounded-full">
                       Pending
                     </p>
                   )}

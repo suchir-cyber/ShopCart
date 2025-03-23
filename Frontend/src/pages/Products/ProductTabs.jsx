@@ -26,7 +26,6 @@ const ProductTabs = ({
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
-
   return (
     <div className="flex flex-col md:flex-row">
       <section className="mr-[5rem]">
@@ -36,8 +35,10 @@ const ProductTabs = ({
           }`}
           onClick={() => handleTabClick(1)}
         >
+          {" "}
           Write Your Review
         </div>
+
         <div
           className={`flex-1 p-4 cursor-pointer text-lg ${
             activeTab === 2 ? "font-bold" : ""
@@ -46,6 +47,7 @@ const ProductTabs = ({
         >
           All Reviews
         </div>
+
         <div
           className={`flex-1 p-4 cursor-pointer text-lg ${
             activeTab === 3 ? "font-bold" : ""
@@ -56,7 +58,7 @@ const ProductTabs = ({
         </div>
       </section>
 
-      {/* Second Part */}
+      {/* secondpart */}
       <section>
         {activeTab === 1 && (
           <div className="mt-4">
@@ -64,7 +66,8 @@ const ProductTabs = ({
               <form onSubmit={submitHandler}>
                 <div className="my-2">
                   <label htmlFor="rating" className="block text-xl mb-2">
-                    Rating
+                    {" "}
+                    Rating{" "}
                   </label>
 
                   <select
@@ -97,6 +100,7 @@ const ProductTabs = ({
                     className="p-2 border rounded-lg xl:w-[40rem] text-black"
                   ></textarea>
                 </div>
+
                 <button
                   type="submit"
                   disabled={loadingProductReview}
@@ -104,6 +108,7 @@ const ProductTabs = ({
                 >
                   Submit
                 </button>
+
               </form>
             ) : (
               <p>
@@ -117,23 +122,24 @@ const ProductTabs = ({
       <section>
         {activeTab === 2 && (
           <>
-            <div>{product.reviews.length === 0 && <p>No Reviews</p>}</div>
+            <div >
+              {product.reviews.length === 0 && <p> No Reviews </p>}
+            </div>
 
             <div>
               {product.reviews.map((review) => (
                 <div
-                  key={review._id}
-                  className="bg-[#1A1A1A] p-4 rounded-lg xl:ml-[2rem] sm:ml-[0rem] xl:w-[50rem] sm:w-[24rem] mb-5"
+                 key={review._id}
+                 className="border p-4 rounded-lg xl:ml-[2rem] sm:ml-[0rem] xl:w-[50rem] sm:w-[24rem] mb-5"
                 >
                   <div className="flex justify-between">
-                    <strong className="text-[#B0B0B0]">{review.name}</strong>
-                    <p className="text-[#B0B0B0]">
+                    <strong className="text-[#000000]">{review.name}</strong>
+                    <p className="text-[#000000]">
                       {review.createdAt.substring(0, 10)}
                     </p>
                   </div>
-
-                  <p className="my-4">{review.comment}</p>
-                  <Ratings value={review.rating} />
+                  <p className="my-4 text-pink-800">{review.comment}</p>
+                  <Ratings value={review.rating}/>
                 </div>
               ))}
             </div>
@@ -146,9 +152,9 @@ const ProductTabs = ({
           <section className="ml-[4rem] flex flex-wrap">
             {!data ? (
               <Loader />
-            ) : (
+            ): (
               data.map((product) => (
-                <div key={product._id}>
+                <div key={product._id}> 
                   <SmallProduct product={product} />
                 </div>
               ))

@@ -42,6 +42,7 @@ const AdminMenu = () => {
                 Admin Dashboard
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 className="list-item py-2 px-3 block mb-5 hover:bg-[#2E2D2D] rounded-sm"
@@ -53,6 +54,7 @@ const AdminMenu = () => {
                 Create Category
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 className="list-item py-2 px-3 block mb-5 hover:bg-[#2E2D2D] rounded-sm"
@@ -64,6 +66,7 @@ const AdminMenu = () => {
                 Create Product
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 className="list-item py-2 px-3 block mb-5 hover:bg-[#2E2D2D] rounded-sm"
@@ -75,6 +78,7 @@ const AdminMenu = () => {
                 All Products
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 className="list-item py-2 px-3 block mb-5 hover:bg-[#2E2D2D] rounded-sm"
@@ -86,6 +90,7 @@ const AdminMenu = () => {
                 Manage Users
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 className="list-item py-2 px-3 block mb-5 hover:bg-[#2E2D2D] rounded-sm"
@@ -104,4 +109,4 @@ const AdminMenu = () => {
   );
 };
 
-export default AdminMenu; 
+export default AdminMenu;

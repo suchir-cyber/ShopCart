@@ -7,7 +7,7 @@ import Messsage from "../../components/Message";
 import Loader from "../../components/Loader";
 import {
   useDeliverOrderMutation,
-  useGetOrderDetailsQuery, 
+  useGetOrderDetailsQuery,
   useGetPaypalClientIdQuery,
   usePayOrderMutation,
 } from "../../redux/api/orderApiSlice";
@@ -92,48 +92,50 @@ const YourOrder = () => {
   ) : error ? (
     <Messsage variant="danger">{error.data.message}</Messsage>
   ) : (
-    <div className="container flex flex-col ml-[10rem] md:flex-row">
+    <div className="container flex flex-col ml-[10rem] max-w-[1250px] md:flex-row">
       <div className="md:w-2/3 pr-4">
         <div className="border gray-300 mt-5 pb-4 mb-5">
           {order.orderItems.length === 0 ? (
             <Messsage>Order is empty</Messsage>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-[80%]">
-                <thead className="border-b-2">
-                  <tr>
-                    <th className="p-2">Image</th>
-                    <th className="p-2">Product</th>
-                    <th className="p-2 text-center">Quantity</th>
-                    <th className="p-2">Unit Price</th>
-                    <th className="p-2">Total</th>
-                  </tr>
-                </thead>
+            <table className="w-full border-collapse">
+              <thead className="border-b-2 border-gray-300">
+                <tr>
+                  <th className="p-4 text-left">Image</th>
+                  <th className="p-4 text-left">Product</th>
+                  <th className="p-4 text-center">Quantity</th>
+                  <th className="p-4 text-center">Unit Price</th>
+                  <th className="p-4 text-center">Total</th>
+                </tr>
+              </thead>
 
-                <tbody>
-                  {order.orderItems.map((item, index) => (
-                    <tr key={index}>
-                      <td className="p-2">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-16 h-16 object-cover"
-                        />
-                      </td>
+              <tbody>
+                {order.orderItems.map((item, index) => (
+                <tr key={index} className="border-b border-gray-200">
+                  <td className="p-4">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-20 h-20 object-cover rounded-md"
+                    />
+                  </td>
 
-                      <td className="p-2">
-                        <Link to={`/product/${item.product}`}>{item.name}</Link>
-                      </td>
+                  <td className="p-4">
+                    <Link to={`/product/${item.product}`} className="hover:underline">
+                    {item.name}
+                    </Link>
+                  </td>
 
-                      <td className="p-2 text-center">{item.qty}</td>
-                      <td className="p-2 text-center">{item.price}</td>
-                      <td className="p-2 text-center">
-                        $ {(item.qty * item.price).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                  <td className="p-4 text-center">{item.qty}</td>
+                  <td className="p-4 text-center">₹ {item.price}</td>
+                  <td className="p-4 text-center font-semibold">
+                    ₹ {(item.qty * item.price).toFixed(2)}
+                  </td>
+                </tr>
+                ))}
+              </tbody>
+            </table>
             </div>
           )}
         </div>
@@ -176,19 +178,19 @@ const YourOrder = () => {
         <h2 className="text-xl font-bold mb-2 mt-[3rem]">Order Summary</h2>
         <div className="flex justify-between mb-2">
           <span>Items</span>
-          <span>$ {order.itemsPrice}</span>
+          <span>₹ {order.itemsPrice}</span>
         </div>
         <div className="flex justify-between mb-2">
           <span>Shipping</span>
-          <span>$ {order.shippingPrice}</span>
+          <span>₹ {order.shippingPrice}</span>
         </div>
         <div className="flex justify-between mb-2">
           <span>Tax</span>
-          <span>$ {order.taxPrice}</span>
+          <span>₹ {order.taxPrice}</span>
         </div>
         <div className="flex justify-between mb-2">
           <span>Total</span>
-          <span>$ {order.totalPrice}</span>
+          <span>₹ {order.totalPrice}</span>
         </div>
 
         {!order.isPaid && (
@@ -215,7 +217,7 @@ const YourOrder = () => {
           <div>
             <button
               type="button"
-              className="bg-pink-500 text-white w-full py-2"
+              className="bg-pink-500 text-black w-full py-2"
               onClick={deliverHandler}
             >
               Mark As Delivered

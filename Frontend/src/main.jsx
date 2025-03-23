@@ -6,7 +6,7 @@ import { Route , RouterProvider , createRoutesFromElements} from "react-router"
 import { createBrowserRouter } from "react-router";
 import { Provider } from "react-redux";
 import { store } from "./redux/features/store";
-import { Register } from './pages/Auth/Register.jsx';
+import Register from './pages/Auth/Register.jsx';
 
 import PrivateRoute from './components/PrivateRoute.jsx';
 
@@ -14,7 +14,7 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 import Home from './pages/Home.jsx';
 
 //users
-import { Profile } from './pages/User/Profile.jsx';
+import Profile from './pages/User/Profile.jsx';
 import  Favorites  from './pages/Products/Favorites.jsx';
 import  ProductDetails  from './pages/Products/ProductDetails.jsx';
 import Cart from './pages/Cart.jsx';
@@ -25,11 +25,11 @@ import Login from './pages/Auth/Login.jsx'
 
 //Admin
 import { AdminRoute } from './pages/Admin/AdminRoute.jsx';
-import { UserList } from './pages/Admin/UserList.jsx';
-import { CategoryList } from './pages/Admin/CategoryList.jsx';
-import { ProductList } from './pages/Admin/ProductList.jsx';
+import UserList from './pages/Admin/UserList.jsx';
+import CategoryList from './pages/Admin/CategoryList.jsx';
+import ProductList from './pages/Admin/ProductList.jsx';
 import  ProductUpdate  from '../src/pages/Admin/ProductUpdate.jsx'
-import { AllProducts } from '../src/pages/Admin/AllProducts.jsx'
+import AllProducts from '../src/pages/Admin/AllProducts.jsx'
 import Shipping from './pages/orders/Shipping.jsx';
 import PlaceOrder from './pages/orders/PlaceOrder.jsx';
 import YourOrder from './pages/orders/YourOrder.jsx';
