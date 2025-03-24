@@ -13,7 +13,7 @@ const AdminMenu = () => {
     <>
       <button
         className={`${
-          isMenuOpen ? "top-2 right-2" : "top-5 right-7"
+          isMenuOpen ? "top-2 right-2 cursor-pointer" : "top-5 right-7 cursor-pointer"
         } bg-[#151515] p-2 fixed rounded-lg`}
         onClick={toggleMenu}
       >

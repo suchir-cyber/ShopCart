@@ -84,7 +84,7 @@ const UserList = () => {
                       <div className="flex items-center">
                         {user.username}{" "}
                         <button onClick={()=>toggleEdit(user._id, user.username, user.email)}>
-                          <FaEdit className="ml-[1rem]" />
+                          <FaEdit className="ml-[1rem] cursor-pointer" />
                         </button>
                       </div>
                     )}
@@ -101,7 +101,7 @@ const UserList = () => {
                       <div className="flex item-center">
                         <p>{user.email}</p>
                         <button onClick={()=>toggleEdit(user._id,user.username,user.email)}>
-                          <FaEdit className="ml-[1rem]"/>
+                          <FaEdit className="ml-[1rem] cursor-pointer"/>
                         </button>
                       </div>
                     )}
@@ -117,7 +117,7 @@ const UserList = () => {
                   <td className="px-4 py-2">
                     {!user.isAdmin && (
                       <div className="flex">
-                        <button onClick={()=>deleteHandler(user._id)} className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        <button onClick={()=>deleteHandler(user._id)} className="bg-red-600 hover:bg-red-700 text-white cursor-pointer font-bold py-2 px-4 rounded">
                           <FaTrash />
                         </button>
                       </div>

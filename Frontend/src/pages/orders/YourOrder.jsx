@@ -122,8 +122,8 @@ const YourOrder = () => {
                   </td>
 
                   <td className="p-4">
-                    <Link to={`/product/${item.product}`} className="hover:underline">
-                    {item.name}
+                    <Link to={`/product/${item.product}`} className="no-underline hover:text-pink-500">
+                    {item.name?.substring(0, 40)} ...
                     </Link>
                   </td>
 

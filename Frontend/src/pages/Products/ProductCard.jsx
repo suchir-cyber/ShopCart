@@ -32,7 +32,7 @@ const ProductCard = ( { p }) => {
 
       <div className="p-5">
         <div className="flex justify-between">
-           <h5 className="mb-2 text-xl text-black dark:text-white">{p?.name}</h5>
+           <h5 className="mb-2 text-xl" style={{ color: "#00FFFF" }}>{p?.name?.substring(0, 20)} ...</h5>
 
            <p className="text-black font-semibold text-pink-500">
               {p?.price?.toLocaleString("en-IN" , {
@@ -42,7 +42,7 @@ const ProductCard = ( { p }) => {
            </p>   
         </div>
 
-        <p className="mb-3 font-normal text-black">
+        <p className="mb-3 font-normal text-white" style={{ color: "#A0C4FF" }}>
           {p?.description?.substring(0, 60)} ...
         </p>
 
@@ -74,7 +74,7 @@ const ProductCard = ( { p }) => {
             className="p-2 rounded-full"
             onClick={() => addToCartHandler(p, 1)}
           >
-            <AiOutlineShoppingCart className="text-black" size={25} />
+            <AiOutlineShoppingCart className="text-white cursor-pointer" size={25} />
           </button>
         </section>
       </div>

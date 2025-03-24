@@ -47,7 +47,7 @@ const Cart = () => {
 
                   <div className="w-24">
                     <select
-                      className="w-full p-1 border rounded text-black"
+                      className="w-full p-1 border rounded text-black cursor-pointer"
                       value={item.qty}
                       onChange={(e) =>
                         addToCartHandler(item, Number(e.target.value))
@@ -62,7 +62,7 @@ const Cart = () => {
                   </div>
                   <div>
                     <button className="text-red-500 mr-[5rem]" onClick={()=>removeFromCartHandler(item._id)}>
-                      <FaTrash className=" ml-[1rem] mt-[]"  />
+                      <FaTrash className=" ml-[1rem] mt-[] cursor-pointer"  />
                     </button>
                   </div>
                 </div>  
@@ -82,7 +82,7 @@ const Cart = () => {
                   </div>
 
                   <button
-                    className="bg-pink-500 mt-4 py-2 px-4 rounded-full text-lg w-full text-white"
+                    className="bg-pink-500 mt-4 py-2 px-4 rounded-full text-lg w-full text-white cursor-pointer"
                     disabled={cartItems.length === 0}
                     onClick={checkoutHandler}
                   >

@@ -61,8 +61,8 @@ const ProductCarousel = () => {
   
                   <div className="flex justify-between w-[20rem]">
                     <div className="mr-2">
-                      <h2>{name}</h2>
-                      <p> {price} ₹</p> <br /> 
+                      <h2 style={{ color: "#3C3C3C" }}>{name}</h2>
+                      <p style={{ color: "#3C3C3C" }}>₹ {price} </p> <br /> 
                       <p className="w-[25rem]">
                         {description.substring(0, 170)} ...
                       </p>

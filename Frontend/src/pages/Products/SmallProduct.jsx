@@ -9,7 +9,7 @@ const SmallProduct = ({ product }) => {
         <img
           src={product.image}
           alt={product.name}
-          className="h-auto rounded"
+          className="h-[256px] w-[256px] rounded"
         />
         <HeartIcon product={product} />
       </div>
@@ -19,7 +19,7 @@ const SmallProduct = ({ product }) => {
           <h2 className="flex justify-between items-center">
             <div>{product.name}</div>
             <span className="bg-pink-200 text-pink-900 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-pink-900 dark:text-pink-300">
-              {product.price} ₹
+              ₹{product.price}
             </span>
           </h2>
         </Link>

@@ -19,6 +19,7 @@ const Shop = () => {
 
   const categoriesQuery = useFetchCategoriesQuery();
   const [priceFilter, setPriceFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search input
 
   const filteredProductsQuery = useGetFilteredProductsQuery({
     checked,
@@ -34,13 +35,12 @@ const Shop = () => {
   useEffect(() => {
     if (!checked.length || !radio.length) {
       if (!filteredProductsQuery.isLoading) {
-        // Filter products based on both checked categories and price filter
+        // Filter products based on price and search term
         const filteredProducts = filteredProductsQuery.data.filter(
           (product) => {
-            // Check if the product price includes the entered price filter value
             return (
-              product.price.toString().includes(priceFilter) ||
-              product.price === parseInt(priceFilter, 10)
+              (product.price <= parseInt(priceFilter, 10) || priceFilter === "") &&
+              product.name.toLowerCase().includes(searchTerm.toLowerCase()) // Search by name
             );
           }
         );
@@ -48,7 +48,7 @@ const Shop = () => {
         dispatch(setProducts(filteredProducts));
       }
     }
-  }, [checked, radio, filteredProductsQuery.data, dispatch, priceFilter]);
+  }, [checked, radio, filteredProductsQuery.data, dispatch, priceFilter, searchTerm]);
 
   const handleBrandClick = (brand) => {
     const productsByBrand = filteredProductsQuery.data?.filter(
@@ -64,7 +64,6 @@ const Shop = () => {
     dispatch(setChecked(updatedChecked));
   };
 
-  //Add " All Brands" option to uniqueBrands
   const uniqueBrands = [
     ...Array.from(
       new Set(
@@ -73,11 +72,9 @@ const Shop = () => {
           .filter((brand) => brand !== undefined)
       )
     ),
-    //set is for removing duplicates
   ];
 
   const handlePriceChange = (e) => {
-    // Update the price filter state when the user types in the input filed
     setPriceFilter(e.target.value);
   };
 
@@ -85,9 +82,21 @@ const Shop = () => {
     <>
       <div className="container mx-auto">
         <div className="flex md:flex-row">
-          <div className="bg-[#D5F5E3] mt-2 p-2 mb-2 ml-14">
-            <h2 className="h4 text-center font-bold py-2 bg-pink-300 rounded-full mb-2">
-              Catagory Filter
+          <div className="bg-[#F8F9FA] mt-2 p-2 mb-2 ml-14">
+            
+            {/* Search Bar */}
+            <div className="p-5 w-[15rem]">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-pink-300"
+              />
+            </div>
+
+            <h2 className="h4 text-center font-bold py-2 bg-[#FF4081] rounded-full mb-2">
+              Category Filter
             </h2>
 
             <div className="p-5 w-[15rem]">
@@ -95,30 +104,24 @@ const Shop = () => {
                 <div key={c._id} className="mb-2">
                   <div className="flex items-center mr-4">
                     <input
-                     type="checkbox"
-                     id="red-checkbox"
-                     onChange={(e) => handleCheck(e.target.checked, c._id)}
-                     className="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      type="checkbox"
+                      onChange={(e) => handleCheck(e.target.checked, c._id)}
+                      className="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500 cursor-pointer"
                     />
-
-                    <label
-                      htmlFor="pink-checkbox"
-                      className="ml-2 text-sm font-medium text-black dark:text-gray-300"
-                    >
+                    <label className="ml-2 text-sm font-medium text-black">
                       {c.name}
                     </label>
-
                   </div>
                 </div>
               ))}
             </div>
 
-            <h2 className="h4 text-center font-bold py-2 bg-pink-300 rounded-full mb-2">
+            <h2 className="h4 text-center font-bold py-2 bg-[#FF4081] rounded-full mb-2">
               Brand Filter
             </h2>
 
             <div className="p-5">
-              {uniqueBrands?.map((brand)=>(
+              {uniqueBrands?.map((brand) => (
                 <div key={brand}>
                   <div className="flex items-center mr-4 mb-5">
                     <input
@@ -126,13 +129,9 @@ const Shop = () => {
                       id={brand}
                       name="brand"
                       onChange={() => handleBrandClick(brand)}
-                      className="w-4 h-4 text-pink-400 bg-gray-100 border-gray-300 focus:ring-pink-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-pink-400 bg-gray-100 border-gray-300 focus:ring-pink-500 cursor-pointer"
                     />
-
-                    <label
-                      htmlFor="pink-radio"
-                      className="ml-2 text-sm font-medium text-black dark:text-gray-300"
-                    >
+                    <label className="ml-2 text-sm font-medium text-black">
                       {brand}
                     </label>
                   </div>
@@ -140,8 +139,8 @@ const Shop = () => {
               ))}
             </div>
 
-            <h2 className="h4 text-center font-bold py-2 bg-pink-300 rounded-full mb-2">
-              price filter
+            <h2 className="h4 text-center font-bold py-2 bg-[#FF4081] rounded-full mb-2">
+              Price Filter
             </h2>
 
             <div className="p-5 w-[15rem]">
@@ -150,14 +149,18 @@ const Shop = () => {
                 placeholder="Enter Price"
                 value={priceFilter}
                 onChange={handlePriceChange}
-                className="w-full px-3 py-2 placeholder-black-400 border rounded-lg focus:outline-none focus:ring focus:border-pink-300"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-pink-300"
               />
             </div>
 
             <div className="p-5 pt-0">
               <button
                 className="w-full border my-4"
-                onClick={() => window.location.reload()}
+                onClick={() => {
+                  setSearchTerm("");
+                  setPriceFilter("");
+                  window.location.reload();
+                }}
               >
                 Reset
               </button>
@@ -165,15 +168,17 @@ const Shop = () => {
           </div>
 
           <div className="p-3">
-            <h2 className="h4 text-center mb-2">
-              {products?.length} Products
-            </h2>
-
+          <div className="text-center my-6">
+              <h2 className="text-3xl font-bold text-gray-800">
+                  Shop <span className="text-pink-500">({products?.length} Products)</span>
+              </h2>
+              <div className="w-24 h-1 mx-auto mt-2 bg-pink-500 rounded-full"></div>
+          </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.length === 0 ? (
                 <Loader />
               ) : (
-                products.map((p)=>(
+                products.map((p) => (
                   <div className="p-3" key={p._id}>
                     <ProductCard p={p} />
                   </div>

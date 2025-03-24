@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../../redux/api/usersApiSlice";
 import { logout } from "../../redux/features/auth/authSlice";
 import FavoritesCount from "../Products/FavoritesCount";
+import { CgProfile } from "react-icons/cg";
 
 const Navigation = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -107,7 +108,9 @@ const Navigation = () => {
           className="flex items-center text-gray-8000 focus:outline-none"
         >
           {userInfo ? (
-            <span className="text-white relative top-0.1">{userInfo.username}</span>
+            <span className="text-white relative top-0.1 cursor-pointer">
+            <CgProfile />
+            </span>
           ) : (
             <></>
           )}

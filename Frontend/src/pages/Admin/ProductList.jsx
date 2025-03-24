@@ -185,7 +185,7 @@ const ProductList = () => {
 
             <button
               onClick={handleSubmit}
-              className="py-4 px-10 mt-5 text-white rounded-lg text-lg bg-pink-600"
+              className="py-4 px-10 mt-5 text-white rounded-lg text-lg bg-pink-600 cursor-pointer"
             >
               Submit
             </button>
