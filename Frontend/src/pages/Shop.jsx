@@ -33,22 +33,20 @@ const Shop = () => {
   }, [categoriesQuery.data, dispatch]);
 
   useEffect(() => {
-    if (!checked.length || !radio.length) {
-      if (!filteredProductsQuery.isLoading) {
-        // Filter products based on price and search term
-        const filteredProducts = filteredProductsQuery.data.filter(
-          (product) => {
-            return (
-              (product.price <= parseInt(priceFilter, 10) || priceFilter === "") &&
-              product.name.toLowerCase().includes(searchTerm.toLowerCase()) // Search by name
-            );
-          }
-        );
+    if (!filteredProductsQuery.isLoading && filteredProductsQuery.data) {
+      // Filter products based on price and search term
+      const filteredProducts = filteredProductsQuery.data.filter(
+        (product) => {
+          return (
+            (product.price <= parseInt(priceFilter, 10) || priceFilter === "") &&
+            product.name.toLowerCase().includes(searchTerm.toLowerCase()) // Search by name
+          );
+        }
+      );
 
-        dispatch(setProducts(filteredProducts));
-      }
+      dispatch(setProducts(filteredProducts));
     }
-  }, [checked, radio, filteredProductsQuery.data, dispatch, priceFilter, searchTerm]);
+  }, [filteredProductsQuery.data, dispatch, priceFilter, searchTerm]);
 
   const handleBrandClick = (brand) => {
     const productsByBrand = filteredProductsQuery.data?.filter(

@@ -33,7 +33,7 @@ const addProduct = asyncHandler(async (req, res) => {
     res.json(product);
   } catch (error) {
     console.error(error);
-    res.status(400).json(error.message);
+    res.status(400).json(error.message); 
   }
 });
 
@@ -130,7 +130,7 @@ const updateProductDetails = asyncHandler(async (req, res) => {
       const products = await Product.find({})
         .populate("category")
         .limit(12)
-        .sort({ createAt: -1 });
+        .sort({ createdAt: -1 });
   
       res.json(products);
     } catch (error) {
@@ -184,6 +184,7 @@ const updateProductDetails = asyncHandler(async (req, res) => {
   const fetchTopProducts = asyncHandler(async (req, res) => {
     try {
       const products = await Product.find({}).sort({ rating: -1 }).limit(4);
+      console.log("Fetched top products:", products); // Add this line
       res.json(products);
     } catch (error) {
       console.error(error);

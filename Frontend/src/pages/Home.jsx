@@ -6,7 +6,7 @@ import Message from "../components/Message"
 import Product from "./Products/Product"
 const Home = () => {
     const {keyword} = useParams();
-    const {data, isLoading, isError} = useGetProductsQuery({keyword});
+    const {data, isLoading, isError,error} = useGetProductsQuery({keyword});
     // returns 6 products due to page size=6
 
 
@@ -14,7 +14,7 @@ const Home = () => {
     <>
       {!keyword ? <Header /> : null}
       {isLoading ? (<Loader />): isError ? (<Message variant="danger">
-        {isError?.data.message || isError.error}
+        {error?.data?.message || error.error}
       </Message>) :(
         <>
           <div className="flex justify-between items-center">
@@ -32,7 +32,7 @@ const Home = () => {
 
           <div>
             <div className="flex justify-center flex-wrap mt-[2rem]">
-              {data.products.map((product) => (
+              {data && data.products.map((product) => (
                 <div key={product._id}>
                   <Product product={product} />
                 </div>

@@ -18,6 +18,13 @@ const Login = () => {
     const {userInfo} = useSelector(state=>state.auth);
 
     const {search} = useLocation()
+        // {
+        // pathname: "/login",
+        // search: "?redirect=/checkout",
+        // hash: "",
+        // state: null,
+        // key: "abc123"
+        // }
     const sp= new URLSearchParams(search)
     const redirect =sp.get("redirect") || "/"
 
@@ -38,10 +45,7 @@ const Login = () => {
             toast.success("login successful")
             
         } catch (error) {
-            //toast.error(error?.data?.message || error.message || "An error occured") ;
-            // toast.error("invalid credientials")
-            toast.error(error?.data || "an error occured")
-            
+            toast.error(error?.data?.message || error.error || "An error occurred");
         }
     }
 

@@ -24,33 +24,49 @@ const ProductList = () => {
   const [createProduct] = useCreateProductMutation();
   const { data: categories } = useFetchCategoriesQuery();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
 
-    try {
-      const productData = new FormData();
-      productData.append("image", image);
-      productData.append("name", name);
-      productData.append("description", description);
-      productData.append("price", price);
-      productData.append("category", category);
-      productData.append("quantity", quantity);
-      productData.append("brand", brand);
-      productData.append("countInStock", stock);
+      e.preventDefault();
 
-      const { data } = await createProduct(productData);
+  
 
-      if (data.error) {
-        toast.error("Product create failed. Try Again.");
-      } else {
+      try {
+
+        const productData = new FormData();
+
+        productData.append("image", image);
+
+        productData.append("name", name);
+
+        productData.append("description", description);
+
+        productData.append("price", price);
+
+        productData.append("category", category);
+
+        productData.append("quantity", quantity);
+
+        productData.append("brand", brand);
+
+        productData.append("countInStock", stock);
+
+  
+
+        const data = await createProduct(productData).unwrap();
+
         toast.success(`${data.name} is created`);
+
         navigate("/");
+
+      } catch (error) {
+
+        console.error(error);
+
+        toast.error(error?.data?.message || error.error || "Product create failed. Try Again.");
+
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Product create failed. Try Again.");
-    }
-  };
+
+    };
   
   const uploadFileHandler = async (e) => {
     const formData = new FormData();

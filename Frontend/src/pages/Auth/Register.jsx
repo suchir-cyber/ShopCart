@@ -42,9 +42,8 @@ const Register = () => {
                 toast.success("User successfully registered")
 
             } catch (error) {
-                console.log(error)
-                // toast.error(error.data.message)
-                toast.error(error?.data || "an error occured")
+                console.log(error);
+                toast.error(error?.data?.message || error.error || "An error occurred");
             }
         }
 

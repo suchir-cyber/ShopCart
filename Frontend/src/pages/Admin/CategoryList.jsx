@@ -32,15 +32,11 @@ const CategoryList = () => {
 
     try {
       const result = await createCategory({ name }).unwrap();
-      if (result.error) {
-        toast.error(result.error);
-      } else {
-        setName("");
-        toast.success(`${result.name} is created.`);
-      }
+      setName("");
+      toast.success(`${result.name} is created.`);
     } catch (error) {
       console.error(error);
-      toast.error("Creating category failed, try again.");
+      toast.error(error?.data?.message || error.error || "Creating category failed, try again.");
     }
   };
 
@@ -60,16 +56,13 @@ const CategoryList = () => {
         },
       }).unwrap();
 
-      if (result.error) {
-        toast.error(result.error);
-      } else {
-        toast.success(`${result.name} is updated`);
-        setSelectedCategory(null);
-        setUpdatingName("");
-        setModalVisible(false);
-      }
+      toast.success(`${result.name} is updated`);
+      setSelectedCategory(null);
+      setUpdatingName("");
+      setModalVisible(false);
     } catch (error) {
       console.error(error);
+      toast.error(error?.data?.message || error.error || "Updating category failed, try again.");
     }
   };
 
@@ -77,16 +70,12 @@ const CategoryList = () => {
     try {
       const result = await deleteCategory(selectedCategory._id).unwrap();
 
-      if (result.error) {
-        toast.error(result.error);
-      } else {
-        toast.success(`${result.name} is deleted.`);
-        setSelectedCategory(null);
-        setModalVisible(false);
-      }
+      toast.success(`${result.name} is deleted.`);
+      setSelectedCategory(null);
+      setModalVisible(false);
     } catch (error) {
       console.error(error);
-      toast.error("Category delection failed. Tray again.");
+      toast.error(error?.data?.message || error.error || "Category deletion failed. Try again.");
     }
   };
 

@@ -20,7 +20,7 @@ const createUser = asyncHandler(async(req,res) => {
     try{
         await newUser.save()
 
-        createToken(res,newUser._id);
+        const token = createToken(newUser._id);
 
         res.status(201).json(
             {
@@ -28,7 +28,7 @@ const createUser = asyncHandler(async(req,res) => {
                 username : newUser.username,
                 email : newUser.email,
                 isAdmin : newUser.isAdmin,
-
+                token: token
             }
         );
     }
@@ -47,7 +47,7 @@ const loginUser = asyncHandler(async (req,res) => {
         const isPasswordValid = await bcrypt.compare(password,existingUser.password)
 
         if(isPasswordValid){
-            createToken(res,existingUser._id)
+            const token = createToken(existingUser._id)
 
             res.status(201).json(
                 {
@@ -55,7 +55,7 @@ const loginUser = asyncHandler(async (req,res) => {
                     username : existingUser.username,
                     email : existingUser.email,
                     isAdmin : existingUser.isAdmin,
-    
+                    token: token
                 }
             );
             return;
@@ -64,11 +64,6 @@ const loginUser = asyncHandler(async (req,res) => {
 })
 
 const logoutCurrentUser = asyncHandler(async (req,res) => {
-    res.cookie('jwt' , '', {
-        httpOnly : true,
-        expires : new Date(0),
-    })
-
     res.status(200).json({ message : "Logged out successfully!!"})
 });
 
