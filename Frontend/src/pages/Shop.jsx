@@ -10,6 +10,7 @@ import {
 } from "../redux/features/shop/shopSlice";
 import Loader from "../components/Loader";
 import ProductCard from "./Products/ProductCard";
+import Message from "../components/Message";
 
 const Shop = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const Shop = () => {
 
   const categoriesQuery = useFetchCategoriesQuery();
   const [priceFilter, setPriceFilter] = useState("");
-  const [searchTerm, setSearchTerm] = useState(""); // New state for search input
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredProductsQuery = useGetFilteredProductsQuery({
     checked,
@@ -34,16 +35,13 @@ const Shop = () => {
 
   useEffect(() => {
     if (!filteredProductsQuery.isLoading && filteredProductsQuery.data) {
-      // Filter products based on price and search term
       const filteredProducts = filteredProductsQuery.data.filter(
         (product) => {
-          return (
-            (product.price <= parseInt(priceFilter, 10) || priceFilter === "") &&
-            product.name.toLowerCase().includes(searchTerm.toLowerCase()) // Search by name
-          );
+          const matchesPrice = product.price <= parseInt(priceFilter, 10) || priceFilter === "";
+          const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+          return matchesPrice && matchesSearch;
         }
       );
-
       dispatch(setProducts(filteredProducts));
     }
   }, [filteredProductsQuery.data, dispatch, priceFilter, searchTerm]);
@@ -63,12 +61,10 @@ const Shop = () => {
   };
 
   const uniqueBrands = [
-    ...Array.from(
-      new Set(
-        filteredProductsQuery.data
-          ?.map((product) => product.brand)
-          .filter((brand) => brand !== undefined)
-      )
+    ...new Set(
+      filteredProductsQuery.data
+        ?.map((product) => product.brand)
+        .filter((brand) => brand)
     ),
   ];
 
@@ -76,117 +72,113 @@ const Shop = () => {
     setPriceFilter(e.target.value);
   };
 
-  return (
-    <>
-      <div className="container mx-auto">
-        <div className="flex md:flex-row">
-          <div className="bg-[#F8F9FA] mt-2 p-2 mb-2 ml-14">
-            
-            {/* Search Bar */}
-            <div className="p-5 w-[15rem]">
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-pink-300"
-              />
-            </div>
+  const resetFilters = () => {
+    setSearchTerm("");
+    setPriceFilter("");
+    dispatch(setChecked([]));
+    // Consider a more graceful state reset instead of a full page reload
+    // For now, keeping the original behavior:
+    window.location.reload();
+  };
 
-            <h2 className="h4 text-center font-bold py-2 bg-[#FF4081] rounded-full mb-2">
+  return (
+    <div className="container mx-auto px-4">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+        {/* Filter Section */}
+        <div className="col-span-1 rounded-lg bg-neutral-100 p-4">
+          <div className="mb-6">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full rounded-lg border-neutral-400 px-3 py-2 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+            />
+          </div>
+
+          <div className="mb-6">
+            <h2 className="mb-2 rounded-full bg-pink-500 py-2 text-center font-bold text-white">
               Category Filter
             </h2>
+            {categories?.map((c) => (
+              <div key={c._id} className="mb-2 flex items-center">
+                <input
+                  type="checkbox"
+                  id={`category-${c._id}`}
+                  checked={checked.includes(c._id)}
+                  onChange={(e) => handleCheck(e.target.checked, c._id)}
+                  className="h-4 w-4 cursor-pointer rounded border-gray-300 text-primary focus:ring-primary"
+                />
+                <label htmlFor={`category-${c._id}`} className="ml-2 text-sm text-neutral-700">
+                  {c.name}
+                </label>
+              </div>
+            ))}
+          </div>
 
-            <div className="p-5 w-[15rem]">
-              {categories?.map((c) => (
-                <div key={c._id} className="mb-2">
-                  <div className="flex items-center mr-4">
-                    <input
-                      type="checkbox"
-                      onChange={(e) => handleCheck(e.target.checked, c._id)}
-                      className="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500 cursor-pointer"
-                    />
-                    <label className="ml-2 text-sm font-medium text-black">
-                      {c.name}
-                    </label>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <h2 className="h4 text-center font-bold py-2 bg-[#FF4081] rounded-full mb-2">
+          <div className="mb-6">
+            <h2 className="mb-2 rounded-full bg-pink-500 py-2 text-center font-bold text-white">
               Brand Filter
             </h2>
+            {uniqueBrands?.map((brand) => (
+              <div key={brand} className="mb-2 flex items-center">
+                <input
+                  type="radio"
+                  id={brand}
+                  name="brand"
+                  onChange={() => handleBrandClick(brand)}
+                  className="h-4 w-4 cursor-pointer border-gray-300 text-primary focus:ring-primary"
+                />
+                <label htmlFor={brand} className="ml-2 text-sm text-neutral-700">
+                  {brand}
+                </label>
+              </div>
+            ))}
+          </div>
 
-            <div className="p-5">
-              {uniqueBrands?.map((brand) => (
-                <div key={brand}>
-                  <div className="flex items-center mr-4 mb-5">
-                    <input
-                      type="radio"
-                      id={brand}
-                      name="brand"
-                      onChange={() => handleBrandClick(brand)}
-                      className="w-4 h-4 text-pink-400 bg-gray-100 border-gray-300 focus:ring-pink-500 cursor-pointer"
-                    />
-                    <label className="ml-2 text-sm font-medium text-black">
-                      {brand}
-                    </label>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <h2 className="h4 text-center font-bold py-2 bg-[#FF4081] rounded-full mb-2">
+          <div className="mb-6">
+            <h2 className="mb-2 rounded-full bg-pink-500 py-2 text-center font-bold text-white">
               Price Filter
             </h2>
-
-            <div className="p-5 w-[15rem]">
-              <input
-                type="text"
-                placeholder="Enter Price"
-                value={priceFilter}
-                onChange={handlePriceChange}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-pink-300"
-              />
-            </div>
-
-            <div className="p-5 pt-0">
-              <button
-                className="w-full border my-4"
-                onClick={() => {
-                  setSearchTerm("");
-                  setPriceFilter("");
-                  window.location.reload();
-                }}
-              >
-                Reset
-              </button>
-            </div>
+            <input
+              type="text"
+              placeholder="Max Price"
+              value={priceFilter}
+              onChange={handlePriceChange}
+              className="w-full rounded-lg border-neutral-400 px-3 py-2 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+            />
           </div>
 
-          <div className="p-3">
-          <div className="text-center my-6">
-              <h2 className="text-3xl font-bold text-gray-800">
-                  Shop <span className="text-pink-500">({products?.length} Products)</span>
-              </h2>
-              <div className="w-24 h-1 mx-auto mt-2 bg-pink-500 rounded-full"></div>
+          <button
+            onClick={resetFilters}
+            className="w-full rounded-lg bg-black py-2 font-bold text-white transition-colors hover:bg-red-700"
+          >
+            Reset Filters
+          </button>
+        </div>
+
+        {/* Products Section */}
+        <div className="md:col-span-3">
+          <div className="mb-6 text-center">
+            <h2 className="text-3xl font-bold text-neutral-800">
+              Shop <span className="text-primary">({products?.length} Products)</span>
+            </h2>
+            <div className="mx-auto mt-2 h-1 w-24 rounded-full bg-primary"></div>
           </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.length === 0 ? (
-                <Loader />
-              ) : (
-                products.map((p) => (
-                  <div className="p-3" key={p._id}>
-                    <ProductCard p={p} />
-                  </div>
-                ))
-              )}
-            </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {products.length === 0 ? (
+              <div className="col-span-full">
+                <Message variant="info">No products found matching your criteria.</Message>
+              </div>
+            ) : (
+              products.map((p) => (
+                <ProductCard key={p._id} p={p} />
+              ))
+            )}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

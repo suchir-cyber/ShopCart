@@ -59,43 +59,43 @@ const ProductCarousel = () => {
                     className="w-full rounded-lg object-cover h-[30rem]"
                   />
   
-                  <div className="flex justify-between w-[20rem]">
-                    <div className="mr-2">
-                      <h2 style={{ color: "#3C3C3C" }}>{name}</h2>
-                      <p style={{ color: "#3C3C3C" }}>₹ {price} </p> <br /> 
-                      <p className="w-[25rem]">
+                  <div className="mt-4 grid grid-cols-2 gap-x-4">
+                    <div>
+                      <h2 className="text-lg font-bold text-neutral-800">{name}</h2>
+                      <p className="text-2xl font-extrabold text-primary">₹ {price}</p>
+                      <p className="mt-2 text-sm text-neutral-600">
                         {description.substring(0, 170)} ...
                       </p>
                     </div>
-  
-                    <div className="flex justify-between w-[20rem]">
-                      <div className="one">
-                        <h1 className="flex items-center mb-6 w-[8rem]" >
-                          <FaStore className="mr-2 text-black" /> Brand: {brand}
-                        </h1>
-                        <h1 className="flex items-center mb-6 w-[15rem]">
-                          <FaClock className="mr-2 text-black" /> Added:{" "}
-                          {moment(createdAt).fromNow()}
-                        </h1>
-                        <h1 className="flex items-center mb-6 w-[8rem]">
-                          <FaStar className="mr-2 text-black" /> Reviews:
-                          {numReviews}
-                        </h1>
+
+                    <div className="flex flex-col justify-between text-sm">
+                      <div className="space-y-2">
+                        <h3 className="flex items-center">
+                          <FaStore className="mr-2 text-neutral-500" /> <strong>Brand:</strong>
+                          <span className="ml-2">{brand}</span>
+                        </h3>
+                        <h3 className="flex items-center">
+                          <FaClock className="mr-2 text-neutral-500" /> <strong>Added:</strong>
+                          <span className="ml-2">{moment(createdAt).fromNow()}</span>
+                        </h3>
+                        <h3 className="flex items-center">
+                          <FaStar className="mr-2 text-neutral-500" /> <strong>Reviews:</strong>
+                          <span className="ml-2">{numReviews}</span>
+                        </h3>
                       </div>
-  
-                      <div className="two">
-                        <h1 className="flex items-center mb-6 ">
-                          <FaStar className="mr-2 text-black" /> Ratings:{" "}
-                          {Math.round(rating)}
-                        </h1>
-                        <h1 className="flex items-center mb-6 ">
-                          <FaShoppingCart className="mr-2 text-black" /> Quantity:{" "}
-                          {quantity}
-                        </h1>
-                        <h1 className="flex items-center mb-6 w-[10rem]">
-                          <FaBox className="mr-2 text-black" /> In Stock:{" "}
-                          {countInStock}
-                        </h1>
+                      <div className="space-y-2">
+                        <h3 className="flex items-center">
+                          <FaStar className="mr-2 text-neutral-500" /> <strong>Ratings:</strong>
+                          <span className="ml-2">{Math.round(rating)}</span>
+                        </h3>
+                        <h3 className="flex items-center">
+                          <FaShoppingCart className="mr-2 text-neutral-500" /> <strong>Quantity:</strong>
+                          <span className="ml-2">{quantity}</span>
+                        </h3>
+                        <h3 className="flex items-center">
+                          <FaBox className="mr-2 text-neutral-500" /> <strong>In Stock:</strong>
+                          <span className="ml-2">{countInStock}</span>
+                        </h3>
                       </div>
                     </div>
                   </div>

@@ -72,6 +72,7 @@ const createOrder = async (req ,res) => {
     });
 
     const createdOrder = await order.save();
+    req.io.emit("newOrder", createdOrder);
     res.status(201).json(createdOrder);
   }
   catch(error){

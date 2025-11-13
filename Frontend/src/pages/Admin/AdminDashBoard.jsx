@@ -12,12 +12,27 @@ import AdminMenu from "./AdminMenu";
 import OrderList from "./OrderList";
 import Loader from "../../components/Loader";
 import { FaUserCircle , FaShoppingBag } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { BASE_URL } from "../../redux/features/constants";
+import io from "socket.io-client";
 
 const AdminDashboard = () => {
-  const { data: sales, isLoading } = useGetTotalSalesQuery();
+  const { data: sales, refetch: refetchSales, isLoading } = useGetTotalSalesQuery();
   const { data: customers, isLoading: loading } = useGetUsersQuery();
-  const { data: orders, isLoading: loadingTwo } = useGetTotalOrdersQuery();
+  const { data: orders, refetch: refetchOrders, isLoading: loadingTwo } = useGetTotalOrdersQuery();
   const { data: salesDetail } = useGetTotalSalesByDateQuery();
+
+  useEffect(() => {
+    const socket = io("http://localhost:5000");
+
+    socket.on("newOrder", () => {
+      toast.success("A new order has been placed!");
+      refetchSales();
+      refetchOrders();
+    });
+
+    return () => socket.disconnect();
+  }, [refetchSales, refetchOrders]);
 
   const [state, setState] = useState({
     options: {

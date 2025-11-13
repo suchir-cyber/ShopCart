@@ -6,6 +6,10 @@ import { Route , RouterProvider , createRoutesFromElements} from "react-router"
 import { createBrowserRouter } from "react-router";
 import { Provider } from "react-redux";
 import { store } from "./redux/features/store";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Register from './pages/Auth/Register.jsx';
 
 import PrivateRoute from './components/PrivateRoute.jsx';
@@ -76,6 +80,7 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
+    <ToastContainer />
     <PayPalScriptProvider>
       <RouterProvider router = {router} />
     </PayPalScriptProvider>
